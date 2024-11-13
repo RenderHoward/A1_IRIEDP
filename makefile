@@ -14,6 +14,10 @@ dats = bin/apf107.dat bin/dgrf1960.dat bin/dgrf1980.dat bin/dgrf2000.dat bin/igr
  bin/ig_rz.dat bin/mcsat14.dat bin/mcsat18.dat bin/mcsat22.dat bin/dgrf1955.dat\
  bin/dgrf1975.dat bin/dgrf1995.dat bin/dgrf2015.dat bin/mcsat11.dat bin/mcsat15.dat bin/mcsat19.dat   
 
+data: $(dats)
+
+all: libIRIsub data
+
 $(objs): | obj
 
 $(dats): | bin
@@ -28,5 +32,6 @@ bin/iri: $(objs) $(dats)
 	
 iri: bin/iri
 
+.PHONY: clean
 clean:
 	rm -R obj bin
