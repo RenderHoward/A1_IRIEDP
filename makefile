@@ -1,11 +1,10 @@
 obj/%.o : %.for 
-	f77 -c $< -o $@ 
+	f77 -g -c $< -o $@ -fPIC 
 
 bin/%.dat : dat/%.dat
 	cp $< bin/
 
-objs = obj/irirtam-test.o obj/cira.o obj/igrf.o obj/iridreg.o obj/iriflip.o obj/irifun.o\
- obj/irirtam.o obj/irisub.o obj/iritec.o
+objs = obj/cira.o obj/igrf.o obj/iridreg.o obj/iriflip.o obj/irifun.o obj/irirtam.o obj/iritec.o
 
 dats = bin/apf107.dat bin/dgrf1960.dat bin/dgrf1980.dat bin/dgrf2000.dat bin/igrf2020.dat\
  bin/mcsat12.dat bin/mcsat16.dat bin/mcsat20.dat bin/dgrf1945.dat bin/dgrf1965.dat\
@@ -27,10 +26,10 @@ obj:
 bin:
 	mkdir bin
 
-bin/iri: $(objs) $(dats) 
-	f77 -o bin/iri $(objs)
+bin/libIRIsub.so: $(objs) | bin  
+	f77 -shared -o bin/libIRIsub.so -fPIC irisub.for $(objs)
 	
-iri: bin/iri
+libIRIsub: bin/libIRIsub.so 
 
 .PHONY: clean
 clean:
