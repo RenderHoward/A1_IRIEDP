@@ -1,6 +1,9 @@
 obj/%.o : %.for 
 	f77 -g -c $< -o $@ -fPIC 
 
+obj/%.o : %.c
+	gcc -g -c $< -o $@ 
+
 bin/%.dat : dat/%.dat
 	cp $< bin/
 
@@ -22,8 +25,7 @@ ascs = bin/ccir11.asc  bin/ccir16.asc  bin/ccir21.asc  bin/ursi14.asc  bin/ursi1
  bin/ccir14.asc  bin/ccir19.asc  bin/ursi12.asc  bin/ursi17.asc  bin/ursi22.asc\
  bin/ccir15.asc  bin/ccir20.asc  bin/ursi13.asc  bin/ursi18.asc\
 
-
-all: libIRIsub data
+all: libIRIsub data CClient
 
 data: $(dats) $(ascs)
 
@@ -42,6 +44,11 @@ bin/libIRIsub.so: $(objs) irisubshim.for| bin
 	f77 -g -shared -o bin/libIRIsub.so -fPIC irisubshim.for  $(objs)
 	
 libIRIsub: bin/libIRIsub.so 
+
+CClient: bin/CClient
+
+bin/CClient: obj/main.o
+	gcc -g obj/main.o -o bin/CClient -Lbin -lIRIsub
 
 .PHONY: clean
 clean:
