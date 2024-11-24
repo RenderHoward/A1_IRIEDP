@@ -1,7 +1,7 @@
 obj/%.o : %.for 
 	f77 -g -c $< -o $@ -fPIC 
 
-obj/%.o : %.c
+obj/%.o : %.c irisub.h
 	gcc -g -c $< -o $@ 
 
 bin/%.dat : dat/%.dat
