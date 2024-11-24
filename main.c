@@ -10,9 +10,6 @@
 
 #include "irisub.h"
 
-// int iri_sub_c(_Bool jf[50], int jmag, double lat, double lon, int yyyy, int mmdd /* -ddd */, double hour,
-//double height_begin, double height_end, double height_step, double (*out_array)[20][1000], double (*out_list)[100] );
-
 int edp( float lat, float lon, int yyyy, int mm, int dd, float hour, HeightData * const data )
 {
     float out_array[1000][20], out_list[100], min = (float)data->min, max = (float)data->max;
