@@ -33,19 +33,38 @@ int edp( float lat, float lon, int yyyy, int mm, int dd, float hour, HeightData 
 
 char *g_monthnames[13] = {"", "Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"};
 
-int main()
+int main( int argc, char **argv )
 {
-    HeightData data = { 10, 1000, 100 };
+    if( argc != 10 )
+    {
+        printf
+        (
+            "Argument error \n"
+            " USAGE: (9 numeric fields) \n "
+            " mm dd yyyy hr lat lon start_height stop_height, num_meas\n\n"
+            " Lat, Lon in decimal degrees west longitudes negative\n"
+            " Height in km\n\n"
+        );
 
-    int mm = 11, dd = 14, yyyy = 2024;
+        return -1;
+    }
 
-    double hr = 12.87, lat = 32.5 ,lon = 16.5;
+    int n = atoi(argv[9]);
+
+    double start = atof(argv[7]), stop = atof(argv[8]);
+
+    HeightData data = { start, stop, n };
+
+    int mm = atoi(argv[1]), dd = atoi(argv[2]), yyyy = atoi(argv[3]);
+
+    double hr = atof(argv[4]), lat = atof(argv[5]) ,lon = atof(argv[6]);
 
     int ret = edp(lat, lon, yyyy, mm, dd, hr, &data);
 
     char buffer[1024];
 
-    sprintf(buffer, "Lat: %6.3f  Lon: %6.3f %s %d, %d  %5.2f UTC", lat, lon, g_monthnames[mm], dd, yyyy, hr);
+    sprintf(buffer, "Lat: %6.3f  Lon: %6.3f %s %d, %d  %5.2f UTC",
+            lat, lon, g_monthnames[mm], dd, yyyy, hr);
 
     if( ret == 0 )
            ret = launchplot(&data, buffer);
